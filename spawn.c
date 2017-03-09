@@ -108,17 +108,7 @@ int spawncli(int f, int n)
 #if	BSD | __hpux | SVR4
 
 int bktoshell(int f, int n)
-{				/* suspend MicroEMACS and wait to wake up */
-	vttidy();
-/******************************
-	int pid;
-
-	pid = getpid();
-	kill(pid,SIGTSTP);
-******************************/
-	kill(0, SIGTSTP);
-	return TRUE;
-}
+{ return TRUE; }
 
 void rtfrmshell(void)
 {
