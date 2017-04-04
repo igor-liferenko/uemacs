@@ -1,3 +1,4 @@
+@ @c
 /*	PKLOCK.C
  *
  *	locking routines as modified by Petri Kutvonen
@@ -82,7 +83,7 @@ char *dolock(char *fname)
 		lseek(fd, 0, SEEK_SET);
 /*		strcpy(locker, getlogin()); */
 		cuserid(locker);
-		strcat(locker + strlen(locker), "@");
+		strcat(locker + strlen(locker), "@@");
 		gethostname(locker + strlen(locker), 64);
 		write(fd, locker, strlen(locker));
 		close(fd);

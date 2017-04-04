@@ -1,3 +1,4 @@
+@ @c
 /*
  *	main.c
 
@@ -220,7 +221,7 @@ int main(int argc, char **argv)
 				break;
 			}
 
-		} else if (argv[carg][0] == '@') {
+		} else if (argv[carg][0] == '@@') {
 
 			/* Process Startup macroes */
 			if (startup(&argv[carg][1]) == TRUE)

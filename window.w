@@ -1,3 +1,4 @@
+@ @c
 /*	window.c
  *
  *      Window management. Some of the functions are internal, and some are

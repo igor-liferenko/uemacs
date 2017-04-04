@@ -1,3 +1,4 @@
+@ @c
 /*	tcap.c
  *
  *	Unix V7 SysV and BS4 Termcap video driver
@@ -262,7 +263,7 @@ static void tcapeeop(void)
 /*
  * Change reverse video status
  *
- * @state: FALSE = normal video, TRUE = reverse video.
+ * state: FALSE = normal video, TRUE = reverse video.
  */
 static void tcaprev(int state)
 {

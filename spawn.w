@@ -1,3 +1,4 @@
+@ @c
 /*	spaw.c
  *
  *	Various operating system access commands.
@@ -246,7 +247,7 @@ int execprg(int f, int n)
 
 /*
  * Pipe a one line command into a window
- * Bound to ^X @
+ * Bound to ^X @@
  */
 int pipecmd(int f, int n)
 {
@@ -288,7 +289,7 @@ int pipecmd(int f, int n)
 #endif
 
 	/* get the command to pipe in */
-	if ((s = mlreply("@", line, NLINE)) != TRUE)
+	if ((s = mlreply("@@", line, NLINE)) != TRUE)
 		return s;
 
 	/* get rid of the command output buffer if it exists */

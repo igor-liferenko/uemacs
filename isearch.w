@@ -1,3 +1,4 @@
+@ @c
 /*	isearch.c
  *
  * The functions in this file implement commands that perform incremental
@@ -63,7 +64,8 @@ int risearch(int f, int n)
 
 	backchar(TRUE, 1);	/* Back up a character                */
 
-	if (!(isearch(f, -n))) {	/* Call ISearch backwards       *//* If error in search:                */
+	if (!(isearch(f, -n))) {	/* Call ISearch backwards       */
+          /* If error in search:                */
 		curwp->w_dotp = curline;	/* Reset the line pointer             */
 		curwp->w_doto = curoff;	/*  and the offset to original value  */
 		curwp->w_flag |= WFMOVE;	/* Say we've moved                    */
@@ -176,7 +178,8 @@ int isearch(int f, int n)
 	 */
 
 	c = ectoc(expc = get_char());	/* Get the first character    */
-	if ((c == IS_FORWARD) || (c == IS_REVERSE) || (c == IS_VMSFORW)) {	/* Reuse old search string?   */
+	if ((c == IS_FORWARD) || (c == IS_REVERSE) || (c == IS_VMSFORW)) {
+          /* Reuse old search string?   */
 		for (cpos = 0; pat[cpos] != 0; cpos++)	/* Yup, find the length           */
 			col = echo_char(pat[cpos], col);	/*  and re-echo the string    */
 		if (c == IS_REVERSE) {	/* forward search?            */
@@ -258,7 +261,8 @@ int isearch(int f, int n)
 		if (!status) {	/* If we lost last time       */
 			TTputc(BELL);	/* Feep again                 */
 			TTflush();	/* see that the feep feeps    */
-		} else /* Otherwise, we must have won */ if (!(status = checknext(c, pat, n)))	/* See if match         */
+		} else /* Otherwise, we must have won */ if (!(status = checknext(c, pat, n)))
+                  /* See if match         */
 			status = scanmore(pat, n);	/*  or find the next match    */
 		c = ectoc(expc = get_char());	/* Get the next char          */
 	}			/* for {;;} */

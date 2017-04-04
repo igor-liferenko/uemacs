@@ -1,3 +1,4 @@
+@ @c
 /*	basic.c
  *
  * The routines in this file move the cursor around on the screen. They
@@ -137,7 +138,7 @@ int forwchar(int f, int n)
 /*
  * Move to a particular line.
  *
- * @n: The specified line position at the current buffer.
+ * n: The specified line position at the current buffer.
  */
 int gotoline(int f, int n)
 {

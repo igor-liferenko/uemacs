@@ -1,3 +1,4 @@
+@ @c
 /*	input.c
  *
  *	Various input routines
@@ -96,7 +97,7 @@ int ectoc(int c)
 int ctoec(int c)
 {
 	if (c >= 0x00 && c <= 0x1F)
-		c = CONTROL | (c + '@');
+		c = CONTROL | (c + '@@');
 	return c;
 }
 
@@ -314,13 +315,13 @@ int get1key(void)
 	if (c == 0) {		/* Apply SPEC prefix    */
 		c = tgetc();
 		if (c >= 0x00 && c <= 0x1F)	/* control key? */
-			c = CONTROL | (c + '@');
+			c = CONTROL | (c + '@@');
 		return SPEC | c;
 	}
 #endif
 
 	if (c >= 0x00 && c <= 0x1F)	/* C0 control -> C-     */
-		c = CONTROL | (c + '@');
+		c = CONTROL | (c + '@@');
 	return c;
 }
 
@@ -390,7 +391,7 @@ handle_CSI:
 		if (islower(c))	/* Force to upper */
 			c ^= DIFCASE;
 		if (c >= 0x00 && c <= 0x1F)	/* control key */
-			c = CONTROL | (c + '@');
+			c = CONTROL | (c + '@@');
 		return META | c;
 	}
 #if	PKCODE
@@ -405,7 +406,7 @@ handle_CSI:
 		if (islower(c))	/* Force to upper */
 			c ^= DIFCASE;
 		if (c >= 0x00 && c <= 0x1F)	/* control key */
-			c = CONTROL | (c + '@');
+			c = CONTROL | (c + '@@');
 		return META | c;
 	}
 #endif
@@ -426,7 +427,7 @@ handle_CSI:
 		if (c >= 'a' && c <= 'z')	/* Force to upper */
 			c -= 0x20;
 		if (c >= 0x00 && c <= 0x1F)	/* control key */
-			c = CONTROL | (c + '@');
+			c = CONTROL | (c + '@@');
 		return CTLX | c;
 	}
 

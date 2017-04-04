@@ -1,3 +1,4 @@
+@ @c
 /*	buffer.c
  *
  *	Buffer management.
@@ -317,8 +318,8 @@ int makelist(int iflag)
 		cp1 = &line[0];	/* Start at left edge   */
 
 		/* output status of ACTIVE flag (has the file been read in? */
-		if (bp->b_active == TRUE)	/* "@" if activated       */
-			*cp1++ = '@';
+		if (bp->b_active == TRUE)	/* "@@" if activated       */
+			*cp1++ = '@@';
 		else
 			*cp1++ = ' ';
 

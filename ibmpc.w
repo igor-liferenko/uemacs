@@ -1,3 +1,4 @@
+@ @c
 /*	ibmpc.c
  *
  * The routines in this file provide support for the IBM-PC and other
@@ -132,7 +133,7 @@ struct terminal term = {
 #if	COLOR
 /* Set the current output color.
  *
- * @color: color to set.
+ * color: color to set.
  */
 void ibmfcol(int color)
 {
@@ -141,7 +142,7 @@ void ibmfcol(int color)
 
 /* Set the current background color.
  *
- * @color: color to set.
+ * color: color to set.
  */
 void ibmbcol(int color)
 {
@@ -239,7 +240,7 @@ void ibmeeop(void)
 
 /* Change reverse video state.
  *
- * @state: TRUE = reverse, FALSE = normal.
+ * state: TRUE = reverse, FALSE = normal.
  */
 void ibmrev(int state)
 {
@@ -248,7 +249,7 @@ void ibmrev(int state)
 
 /* Change screen resolution.
  *
- * @res: resolution to change to.
+ * res: resolution to change to.
  */
 void ibmcres(char *res)
 {
@@ -326,7 +327,7 @@ void ibmkclose(void)
 
 /* Initialize the screen head pointers.
  *
- * @type: type of adapter to init for.
+ * type: type of adapter to init for.
  */
 static int scinit(int type)
 {
@@ -456,10 +457,10 @@ void egaclose(void)
 
 /* Write a line out.
  *
- * @row:    row of screen to place outstr on.
- * @outstr: string to write out (must be term.t_ncol long).
- * @forg:   forground color of string to write.
- * @bacg:   background color.
+ * row:    row of screen to place outstr on.
+ * outstr: string to write out (must be term.t_ncol long).
+ * forg:   forground color of string to write.
+ * bacg:   background color.
  */
 void scwrite(int row, char *outstr, int forg, int bacg)
 {

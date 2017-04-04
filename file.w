@@ -1,3 +1,4 @@
+@ @c
 /*	file.c
  *
  *	The routines in this file handle the reading, writing

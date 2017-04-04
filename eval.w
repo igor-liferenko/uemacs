@@ -1,3 +1,4 @@
+@ @c
 /*	eval.c
  *
  *	Expression evaluation functions
@@ -32,7 +33,7 @@ void varinit(void)
 /*
  * Evaluate a function.
  *
- * @fname: name of function to evaluate.
+ * fname: name of function to evaluate.
  */
 char *gtfun(char *fname)
 {
@@ -451,9 +452,9 @@ int setvar(int f, int n)
 /*
  * Find a variables type and name.
  *
- * @var: name of variable to get.
- * @vd: structure to hold type and pointer.
- * @size: size of variable array.
+ * var: name of variable to get.
+ * vd: structure to hold type and pointer.
+ * size: size of variable array.
  */
 void findvar(char *var, struct variable_description *vd, int size)
 {
@@ -510,8 +511,8 @@ fvar:
 /*
  * Set a variable.
  *
- * @var: variable to set.
- * @value: value to set to.
+ * var: variable to set.
+ * value: value to set to.
  */
 int svar(struct variable_description *var, char *value)
 {
@@ -742,7 +743,7 @@ int gettyp(char *token)
 
 	case '!':
 		return TKDIR;
-	case '@':
+	case '@@':
 		return TKARG;
 	case '#':
 		return TKBUF;

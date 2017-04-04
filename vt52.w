@@ -1,3 +1,4 @@
+@ @c
 /*	vt52.c
  *
  * The routines in this file

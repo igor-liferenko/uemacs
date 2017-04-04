@@ -1,3 +1,4 @@
+@ @c
 /*	word.c
  *
  *      The routines in this file implement commands that work word or a
@@ -21,8 +22,8 @@
  * back to the end of the word.
  * Returns TRUE on success, FALSE on errors.
  *
- * @f: default flag.
- * @n: numeric argument.
+ * f: default flag.
+ * n: numeric argument.
  */
 int wrapword(int f, int n)
 {
