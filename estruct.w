@@ -1,13 +1,6 @@
-/*      ESTRUCT.H
- *
- *      Structure and preprocessor defines
- *
- *	written by Dave G. Conroy
- *	modified by Steve Wilhite, George Jones
- *      substantially modified by Daniel Lawrence
- *	modified by Petri Kutvonen
- */
+@* Structure and preprocessor defines.
 
+@(estruct.h@>=
 #define MAXCOL	500
 #define MAXROW	500
 
@@ -33,7 +26,8 @@
 #define	MSDOS 0
 #endif
 
-#if defined(BSD) || defined(sun) || defined(ultrix) || (defined(vax) && defined(unix)) || defined(ultrix) || defined(__osf__)
+#if defined(BSD) || defined(sun) || defined(ultrix) || \
+ (defined(vax) && defined(unix)) || defined(ultrix) || defined(__osf__)
 #ifndef BSD
 #define BSD 1 /* Berkeley UNIX */
 #endif
@@ -47,7 +41,8 @@
 #undef BSD
 #endif
 
-#if defined(SYSV) || defined(u3b2) || defined(_AIX) || (defined(i386) && defined(unix)) || defined(__hpux)
+#if defined(SYSV) || defined(u3b2) || defined(_AIX) || \
+ (defined(i386) && defined(unix)) || defined(__hpux)
 #define	USG 1 /* System V UNIX */
 #else
 #define	USG 0
@@ -375,7 +370,9 @@
 #if	EBCDIC
 
 #define	DIFCASE		0x40
-#define isletter(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c) || ('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
+#define isletter(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || \
+ ('s' <= c && 'z' >= c) || ('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || \
+ ('S' <= c && 'Z' >= c))
 #define islower(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c))
 #if	PKCODE
 #define isupper(c)	(('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))

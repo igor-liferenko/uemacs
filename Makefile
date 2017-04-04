@@ -127,7 +127,7 @@ depend: ${SRC}
 
 # DO NOT DELETE THIS LINE -- make depend uses it
 
-ansi.o: ansi.c estruct.h edef.c
+ansi.o: ansi.c estruct.c edef.c
 basic.o: basic.c estruct.h efunc.c
 bind.o: bind.c estruct.h edef.h
 buffer.o: buffer.c estruct.h edef.h
