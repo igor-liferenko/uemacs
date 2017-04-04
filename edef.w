@@ -1,12 +1,4 @@
-/*	edef.h
- *
- *	Global variable definitions
- *
- *	written by Dave G. Conroy
- *	modified by Steve Wilhite, George Jones
- *	greatly modified by Daniel Lawrence
- *	modified by Petri Kutvonen
- */
+@ @(edef.h@>=
 #ifndef EDEF_H_
 #define EDEF_H_
 
@@ -126,3 +118,4 @@ extern char outline[];		/* Global string to hold debug line text. */
 extern struct terminal term;
 
 #endif  /* EDEF_H_ */
+
