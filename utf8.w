@@ -1,19 +1,25 @@
-@* @c
-#include "utf8.h"
+@* UTF-8 support.
+@(utf8.h@>=
+#ifndef UTF8_H
+#define UTF8_H
 
-/*
- * utf8_to_unicode()
- *
- * Convert a UTF-8 sequence to its unicode value, and return the length of
- * the sequence in bytes.
- *
- * NOTE! Invalid UTF-8 will be converted to a one-byte sequence, so you can
- * either use it as-is (ie as Latin1) or you can check for invalid UTF-8
- * by checking for a length of 1 and a result > 127.
- *
- * NOTE 2! This does *not* verify things like minimality. So overlong forms
- * are happily accepted and decoded, as are the various "invalid values".
- */
+typedef unsigned int unicode_t;
+
+@ @c @(utf8.h@>
+
+@ Convert a UTF-8 sequence to its unicode value, and return the length of
+the sequence in bytes.
+
+NOTE! Invalid UTF-8 will be converted to a one-byte sequence, so you can
+either use it as-is (ie as Latin1) or you can check for invalid UTF-8
+by checking for a length of 1 and a result $>$ 127.
+
+NOTE 2! This does {\sl not\/} verify things like minimality. So overlong forms
+are happily accepted and decoded, as are the various ``invalid values''.
+
+@(utf8.h@>=
+unsigned utf8_to_unicode(char *line, unsigned index, unsigned len, unicode_t *res);
+@ @c
 unsigned utf8_to_unicode(char *line, unsigned index, unsigned len, unicode_t *res)
 {
 	unsigned value;
@@ -67,17 +73,17 @@ static void reverse_string(char *begin, char *end)
 	} while (begin < end);
 }
 
-/*
- * unicode_to_utf8()
- *
- * Convert a unicode value to its canonical utf-8 sequence.
- *
- * NOTE! This does not check for - or care about - the "invalid" unicode
- * values.  Also, converting a utf-8 sequence to unicode and back does
- * *not* guarantee the same sequence, since this generates the shortest
- * possible sequence, while utf8_to_unicode() accepts both Latin1 and
- * overlong utf-8 sequences.
- */
+@ Convert a unicode value to its canonical utf-8 sequence.
+
+NOTE! This does not check for - or care about - the ``invalid'' unicode
+values.  Also, converting a utf-8 sequence to unicode and back does
+{\sl not\/} guarantee the same sequence, since this generates the shortest
+possible sequence, while |utf8_to_unicode| accepts both Latin1 and
+overlong utf-8 sequences.
+
+@(utf8.h@>=
+unsigned unicode_to_utf8(unsigned int c, char *utf8);
+@ @c
 unsigned unicode_to_utf8(unsigned int c, char *utf8)
 {
 	int bytes = 1;
@@ -97,3 +103,11 @@ unsigned unicode_to_utf8(unsigned int c, char *utf8)
 	}
 	return bytes;
 }
+
+@ @(utf8.h@>=
+static inline int is_beginning_utf8(unsigned char c)
+{
+	return (c & 0xc0) != 0x80;
+}
+
+#endif
