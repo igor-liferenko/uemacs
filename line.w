@@ -1,20 +1,45 @@
-@* @c
-/*	line.c
- *
- * The functions in this file are a general set of line management utilities.
- * They are the only routines that touch the text. They also touch the buffer
- * and window structures, to make sure that the necessary updating gets done.
- * There are routines in this file that handle the kill buffer too. It isn't
- * here for any good reason.
- *
- * Note that this code only updates the dot and mark values in the window list.
- * Since all the code acts on the current window, the buffer that we are
- * editing must be being displayed, which means that "b_nwnd" is non zero,
- * which means that the dot and mark values in the buffer headers are nonsense.
- *
- */
+\noinx
+@* Line.
+The functions in this file are a general set of line management utilities.
+They are the only routines that touch the text. They also touch the buffer
+and window structures, to make sure that the necessary updating gets done.
+There are routines in this file that handle the kill buffer too. It isn't
+here for any good reason.
 
-#include "line.h"
+Note that this code only updates the dot and mark values in the window list.
+Since all the code acts on the current window, the buffer that we are
+editing must be being displayed, which means that |b_nwnd| is non zero,
+which means that the dot and mark values in the buffer headers are nonsense.
+
+@(line.h@>=
+#ifndef LINE_H_
+#define LINE_H_
+
+#include "utf8.h"
+
+@ @c @(line.h@>
+
+@ All text is kept in circularly linked lists of "struct line" structures. These
+begin at the header line (which is the blank line beyond the end of the
+buffer). This line is pointed to by the "struct buffer". Each line contains a the
+number of bytes in the line (the "used" size), the size of the text array,
+and the text. The end of line is not stored as a byte; it's implied. Future
+additions will include update hints, and a list of marks into the line.
+
+@(line.h@>=
+struct line {
+	struct line *l_fp;	/* Link to the next line        */
+	struct line *l_bp;	/* Link to the previous line    */
+	int l_size;		/* Allocated size               */
+	int l_used;		/* Used size                    */
+	char l_text[1];		/* A bunch of characters.       */
+};
+
+#define lforw(lp)       ((lp)->l_fp)
+#define lback(lp)       ((lp)->l_bp)
+#define lgetc(lp, n)    ((lp)->l_text[(n)]&0xFF)
+#define lputc(lp, n, c) ((lp)->l_text[(n)]=(c))
+#define llength(lp)     ((lp)->l_used)
 
 #include <stdio.h>
 
@@ -25,12 +50,14 @@
 
 #define	BLOCK_SIZE 16 /* Line block chunk size. */
 
-/*
- * This routine allocates a block of memory large enough to hold a struct line
- * containing "used" characters. The block is always rounded up a bit. Return
- * a pointer to the new block, or NULL if there isn't any memory left. Print a
- * message in the message line if no space.
- */
+@ This routine allocates a block of memory large enough to hold a struct line
+containing "used" characters. The block is always rounded up a bit. Return
+a pointer to the new block, or NULL if there isn't any memory left. Print a
+message in the message line if no space.
+
+@(line.h@>=
+struct line *lalloc(int used);
+@ @c
 struct line *lalloc(int used)
 {
 	struct line *lp;
@@ -48,12 +75,14 @@ struct line *lalloc(int used)
 	return lp;
 }
 
-/*
- * Delete line "lp". Fix all of the links that might point at it (they are
- * moved to offset 0 of the next line. Unlink the line from whatever buffer it
- * might be in. Release the memory. The buffers are updated too; the magic
- * conditions described in the above comments don't hold here.
- */
+@ Delete line "lp". Fix all of the links that might point at it (they are
+moved to offset 0 of the next line. Unlink the line from whatever buffer it
+might be in. Release the memory. The buffers are updated too; the magic
+conditions described in the above comments don't hold here.
+
+@(line.h@>=
+void lfree(struct line *lp);
+@ @c
 void lfree(struct line *lp)
 {
 	struct buffer *bp;
@@ -92,13 +121,15 @@ void lfree(struct line *lp)
 	free((char *) lp);
 }
 
-/*
- * This routine gets called when a character is changed in place in the current
- * buffer. It updates all of the required flags in the buffer and window
- * system. The flag used is passed as an argument; if the buffer is being
- * displayed in more than 1 window we change EDIT t HARD. Set MODE if the
- * mode line needs to be updated (the "*" has to be set).
- */
+@ This routine gets called when a character is changed in place in the current
+buffer. It updates all of the required flags in the buffer and window
+system. The flag used is passed as an argument; if the buffer is being
+displayed in more than 1 window we change EDIT t HARD. Set MODE if the
+mode line needs to be updated (the "*" has to be set).
+
+@(line.h@>=
+void lchange(int flag);
+@ @c
 void lchange(int flag)
 {
 	struct window *wp;
@@ -117,22 +148,25 @@ void lchange(int flag)
 	}
 }
 
-/*
- * insert spaces forward into text
- *
- * int f, n;		default flag and numeric argument
- */
-int insspace(int f, int n)
+@ Insert spaces forward into text.
+
+@(line.h@>=
+int insspace(int f, int n);
+@ @c
+int insspace(f, n)
+  int f; /* default flag */
+  int n; /* default number */
 {
 	linsert(n, ' ');
 	backchar(f, n);
 	return TRUE;
 }
 
-/*
- * linstr -- Insert a string at the current point
- */
+@ Insert a string at the current point
 
+@(line.h@>=
+int linstr(char *instr);
+@ @c
 int linstr(char *instr)
 {
 	int status = TRUE;
@@ -153,16 +187,15 @@ int linstr(char *instr)
 	return status;
 }
 
-/*
- * Insert "n" copies of the character "c" at the current location of dot. In
- * the easy case all that happens is the text is stored in the line. In the
- * hard case, the line has to be reallocated. When the window list is updated,
- * take special care; I screwed it up once. You always update dot in the
- * current window. You update mark, and a dot in another window, if it is
- * greater than the place where you did the insert. Return TRUE if all is
- * well, and FALSE on errors.
- */
+@ Insert "n" copies of the character "c" at the current location of dot. In
+the easy case all that happens is the text is stored in the line. In the
+hard case, the line has to be reallocated. When the window list is updated,
+take special care; I screwed it up once. You always update dot in the
+current window. You update mark, and a dot in another window, if it is
+greater than the place where you did the insert. Return TRUE if all is
+well, and FALSE on errors.
 
+@c
 static int linsert_byte(int n, int c)
 {
 	char *cp1;
@@ -241,6 +274,9 @@ static int linsert_byte(int n, int c)
 	return TRUE;
 }
 
+@ @(line.h@>=
+int linsert(int n, int c);
+@ @c
 int linsert(int n, int c)
 {
 	char utf8[6];
@@ -259,12 +295,13 @@ int linsert(int n, int c)
 	return TRUE;
 }
 
-/*
- * Overwrite a character into the current line at the current position
- *
- * int c;	character to overwrite on current position
- */
-int lowrite(int c)
+@  Overwrite a character into the current line at the current position
+
+@(line.h@>=
+int lowrite(int c);
+@ @c
+int lowrite(c)
+  int c; /* character to overwrite on current position */
 {
 	if (curwp->w_doto < curwp->w_dotp->l_used &&
 	    (lgetc(curwp->w_dotp, curwp->w_doto) != '\t' ||
@@ -273,9 +310,11 @@ int lowrite(int c)
 	return linsert(1, c);
 }
 
-/*
- * lover -- Overwrite a string at the current point
- */
+@ Overwrite a string at the current point
+
+@(line.h@>=
+int lover(char *ostr);
+@ @c
 int lover(char *ostr)
 {
 	int status = TRUE;
@@ -297,14 +336,16 @@ int lover(char *ostr)
 	return status;
 }
 
-/*
- * Insert a newline into the buffer at the current location of dot in the
- * current window. The funny ass-backwards way it does things is not a botch;
- * it just makes the last line in the file not a special case. Return TRUE if
- * everything works out and FALSE on error (memory allocation failure). The
- * update of dot and mark is a bit easier then in the above case, because the
- * split forces more updating.
- */
+@ Insert a newline into the buffer at the current location of dot in the
+current window. The funny ass-backwards way it does things is not a botch;
+it just makes the last line in the file not a special case. Return TRUE if
+everything works out and FALSE on error (memory allocation failure). The
+update of dot and mark is a bit easier then in the above case, because the
+split forces more updating.
+
+@(line.h@>=
+int lnewline(void);
+@ @c
 int lnewline(void)
 {
 	char *cp1;
@@ -358,6 +399,9 @@ int lnewline(void)
 	return TRUE;
 }
 
+@ @(line.h@>=
+int lgetchar(unicode_t *c);
+@ @c
 int lgetchar(unicode_t *c)
 {
 	int len = llength(curwp->w_dotp);
@@ -365,13 +409,15 @@ int lgetchar(unicode_t *c)
 	return utf8_to_unicode(buf, curwp->w_doto, len, c);
 }
 
-/*
- * ldelete() really fundamentally works on bytes, not characters.
- * It is used for things like "scan 5 words forwards, and remove
- * the bytes we scanned".
- *
- * If you want to delete characters, use ldelchar().
- */
+@ |ldelete| really fundamentally works on bytes, not characters.
+It is used for things like "scan 5 words forwards, and remove
+the bytes we scanned".
+
+If you want to delete characters, use |ldelchar|.
+
+@(line.h@>=
+int ldelchar(long n, int kflag);
+@ @c
 int ldelchar(long n, int kflag)
 {
 	while (n-- > 0) {
@@ -382,16 +428,17 @@ int ldelchar(long n, int kflag)
 	return TRUE;
 }
 
-/*
- * This function deletes "n" bytes, starting at dot. It understands how do deal
- * with end of lines, etc. It returns TRUE if all of the characters were
- * deleted, and FALSE if they were not (because dot ran into the end of the
- * buffer. The "kflag" is TRUE if the text should be put in the kill buffer.
- *
- * long n;		# of chars to delete
- * int kflag;		 put killed text in kill buffer flag
- */
-int ldelete(long n, int kflag)
+@ This function deletes "n" bytes, starting at dot. It understands how do deal
+with end of lines, etc. It returns TRUE if all of the characters were
+deleted, and FALSE if they were not (because dot ran into the end of the
+buffer. The "kflag" is TRUE if the text should be put in the kill buffer.
+
+@(line.h@>=
+int ldelete(long n, int kflag);
+@ @c
+int ldelete(n, kflag)
+  long n; /* # of chars to delete */
+  int kflag; /* put killed text in kill buffer flag */
 {
 	char *cp1;
 	char *cp2;
@@ -455,10 +502,12 @@ int ldelete(long n, int kflag)
 	return TRUE;
 }
 
-/*
- * getctext:	grab and return a string with the text of
- *		the current line
- */
+@ Grab and return a string with the text of
+the current line.
+
+@(line.h@>=
+char *getctext(void);
+@ @c
 char *getctext(void)
 {
 	struct line *lp;	/* line to copy */
@@ -482,13 +531,13 @@ char *getctext(void)
 	return rline;
 }
 
-/*
- * putctext:
- *	replace the current line with the passed in text
- *
- * char *iline;			contents of new line
- */
-int putctext(char *iline)
+@ Replace the current line with the passed in text.
+
+@(line.h@>=
+int putctext(char *iline);
+@ @c
+int putctext(iline)
+  char *iline; /* contents of new line */
 {
 	int status;
 
@@ -505,15 +554,17 @@ int putctext(char *iline)
 	return status;
 }
 
-/*
- * Delete a newline. Join the current line with the next line. If the next line
- * is the magic header line always return TRUE; merging the last line with the
- * header line can be thought of as always being a successful operation, even
- * if nothing is done, and this makes the kill buffer work "right". Easy cases
- * can be done by shuffling data around. Hard cases require that lines be moved
- * about in memory. Return FALSE on error and TRUE if all looks ok. Called by
- * "ldelete" only.
- */
+@ Delete a newline. Join the current line with the next line. If the next line
+is the magic header line always return TRUE; merging the last line with the
+header line can be thought of as always being a successful operation, even
+if nothing is done, and this makes the kill buffer work "right". Easy cases
+can be done by shuffling data around. Hard cases require that lines be moved
+about in memory. Return FALSE on error and TRUE if all looks ok. Called by
+"ldelete" only.
+
+@(line.h@>=
+int ldelnewline(void);
+@ @c
 int ldelnewline(void)
 {
 	char *cp1;
@@ -593,11 +644,13 @@ int ldelnewline(void)
 	return TRUE;
 }
 
-/*
- * Delete all of the text saved in the kill buffer. Called by commands when a
- * new kill context is being created. The kill buffer array is released, just
- * in case the buffer has grown to immense size. No errors.
- */
+@ Delete all of the text saved in the kill buffer. Called by commands when a
+new kill context is being created. The kill buffer array is released, just
+in case the buffer has grown to immense size. No errors.
+
+@(line.h@>=
+void kdelete(void);
+@ @c
 void kdelete(void)
 {
 	struct kill *kp;		/* ptr to scan kill buffer chunk list */
@@ -618,13 +671,14 @@ void kdelete(void)
 	}
 }
 
-/*
- * Insert a character to the kill buffer, allocating new chunks as needed.
- * Return TRUE if all is well, and FALSE on errors.
- *
- * int c;			character to insert in the kill buffer
- */
-int kinsert(int c)
+@ Insert a character to the kill buffer, allocating new chunks as needed.
+Return TRUE if all is well, and FALSE on errors.
+
+@(line.h@>=
+int kinsert(int c);
+@ @c
+int kinsert(c)
+  int c; /* character to insert in the kill buffer */
 {
 	struct kill *nchunk;		/* ptr to newly malloced chunk */
 
@@ -646,11 +700,13 @@ int kinsert(int c)
 	return TRUE;
 }
 
-/*
- * Yank text back from the kill buffer. This is really easy. All of the work
- * is done by the standard insert routines. All you do is run the loop, and
- * check for errors. Bound to "C-Y".
- */
+@ Yank text back from the kill buffer. This is really easy. All of the work
+is done by the standard insert routines. All you do is run the loop, and
+check for errors. Bound to "C-Y".
+
+@(line.h@>=
+int yank(int f, int n);
+@ @c
 int yank(int f, int n)
 {
 	int c;
@@ -689,3 +745,6 @@ int yank(int f, int n)
 	}
 	return TRUE;
 }
+
+@ @(line.h@>=
+#endif  /* LINE_H_ */
