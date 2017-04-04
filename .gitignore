@@ -1,2 +1,11 @@
 em
 *.o
+*.c
+*.h
+*.dvi
+*.idx
+*.log
+*.ps
+*.scn
+*.tex
+*.toc
