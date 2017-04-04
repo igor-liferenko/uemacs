@@ -1,4 +1,6 @@
-@ @(edef.h@>=
+@* Global variable definitions.
+
+@(edef.h@>=
 #ifndef EDEF_H_
 #define EDEF_H_
 
@@ -118,4 +120,3 @@ extern char outline[];		/* Global string to hold debug line text. */
 extern struct terminal term;
 
 #endif  /* EDEF_H_ */
-
