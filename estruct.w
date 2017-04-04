@@ -1,6 +1,9 @@
 @* Structure and preprocessor defines.
 
 @(estruct.h@>=
+#ifndef ESTRUCT_H
+#define ESTRUCT_H
+
 #define MAXCOL	500
 #define MAXROW	500
 
@@ -675,3 +678,5 @@ struct magic_replacement {
 };
 
 #endif  /* MAGIC */
+
+#endif /* ESTRUCT_H */

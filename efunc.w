@@ -4,6 +4,8 @@ to bind keys to them. To add functions,	declare it here in both the
 extern function list and the name binding table.
 
 @(efunc.h@>=
+#ifndef EFUNC_H
+#define EFUNC_H
 
 /* External function declarations. */
 
@@ -358,3 +360,5 @@ extern void lckerror(char *errstr);
 /* pklock.c */
 extern char *dolock(char *fname);
 extern char *undolock(char *fname);
+
+#endif /* EFUNC_H */
