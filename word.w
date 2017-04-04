@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	word.c
  *
  *      The routines in this file implement commands that work word or a

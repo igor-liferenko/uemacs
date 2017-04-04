@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	ANSI.C
  *
  * The routines in this file provide support for ANSI style terminals

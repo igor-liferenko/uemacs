@@ -1,3 +1,4 @@
+@* @c
 #include "usage.h"
 
 #include <stdarg.h>

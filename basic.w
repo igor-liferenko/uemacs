@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	basic.c
  *
  * The routines in this file move the cursor around on the screen. They

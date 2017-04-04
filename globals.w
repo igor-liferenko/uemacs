@@ -1,3 +1,4 @@
+@* @c
 #include "estruct.h"
 #include "edef.h"
 

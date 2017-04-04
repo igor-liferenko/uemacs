@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	eval.c
  *
  *	Expression evaluation functions

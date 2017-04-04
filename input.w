@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	input.c
  *
  *	Various input routines

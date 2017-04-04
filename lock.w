@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	LOCK.C
  *
  *	File locking command routines

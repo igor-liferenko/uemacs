@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	FILEIO.C
  *
  * The routines in this file read and write ASCII files from the disk. All of

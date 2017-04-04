@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	bind.c
  *
  *	This file is for functions having to do with key bindings,

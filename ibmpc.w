@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	ibmpc.c
  *
  * The routines in this file provide support for the IBM-PC and other

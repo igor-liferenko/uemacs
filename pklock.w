@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	PKLOCK.C
  *
  *	locking routines as modified by Petri Kutvonen

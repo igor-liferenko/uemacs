@@ -1,3 +1,4 @@
+@* @c
 /* Name to function binding table.
  *
  * This table gives the names of all the bindable functions

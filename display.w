@@ -1,4 +1,4 @@
-@ @c
+@* @c
 /*	display.c
  *
  *      The functions in this file handle redisplay. There are two halves, the
