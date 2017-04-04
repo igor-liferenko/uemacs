@@ -1,3 +1,19 @@
 C-xC-d the same as ESC-z
 C-s starts search as ESC, and make repeated searches by simply pressing C-s again, exit search via C-m or C-g depending on whether you need to stay on current point or roll back to the search starting point
 C-j produces <NL> in search mode instead of C-m
+----------------
+turn uemacs to CWEB: each module is `@*'-section and everything
+must be in one file - uemacs.w, without using header files, and
+turn all comments into doc-sections (`@ '), print it and start
+reading and writing more documentation along the way for more
+understanding
+
+save cursor on exit like in
+https://github.com/emacs-mirror/emacs/blob/master/lisp/saveplace.el
+or see source code of jmacs or vim
+
+use code which implements '-g' option in uemacs to restore cursor on launch
+
+implement UTF-8 search
+
+see TTY for info on job control
