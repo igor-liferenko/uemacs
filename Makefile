@@ -129,7 +129,7 @@ depend: ${SRC}
 
 ansi.o: ansi.c estruct.h edef.c
 basic.o: basic.c estruct.h efunc.c
-bind.o: bind.c estruct.h edef.h epath.h
+bind.o: bind.c estruct.h edef.h
 buffer.o: buffer.c estruct.h edef.h
 crypt.o: crypt.c estruct.h edef.h
 display.o: display.c estruct.h edef.h utf8.h

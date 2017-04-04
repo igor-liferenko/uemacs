@@ -13,7 +13,7 @@
 #include "estruct.h"
 #include "edef.h"
 #include "efunc.h"
-#include "epath.h"
+@<Info needed to locate files@>@;
 #include "line.h"
 #include "util.h"
 
@@ -717,3 +717,40 @@ char *transbind(char *skey)
 
 	return bindname;
 }
+
+@ This section contains certain info needed to locate the
+initialization (etc) files on a system dependent basis.
+
+@<Info needed to locate files@>=
+
+/*	possible names and paths of help files under different OSs	*/
+static char *pathname[] =
+#if	MSDOS
+{
+	"emacs.rc",
+	"emacs.hlp",
+	"\\sys\\public\\",
+	"\\usr\\bin\\",
+	"\\bin\\",
+	"\\",
+	""
+};
+#endif
+
+#if	V7 | BSD | USG
+{
+	".emacsrc", "emacs.hlp",
+#if	PKCODE
+	    "/usr/global/lib/", "/usr/local/bin/", "/usr/local/lib/",
+#endif
+"/usr/local/", "/usr/lib/", ""};
+#endif
+
+#if	VMS
+{
+	"emacs.rc", "emacs.hlp", "",
+#if	PKCODE
+	    "sys$login:", "emacs_dir:",
+#endif
+"sys$sysdevice:[vmstools]"};
+#endif
