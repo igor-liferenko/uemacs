@@ -1,13 +1,9 @@
-/*	efunc.h
- *
- *	Function declarations and names.
- *
- *	This file list all the C code functions used and the names to use
- *      to bind keys to them. To add functions,	declare it here in both the
- *      extern function list and the name binding table.
- *
- *	modified by Petri Kutvonen
- */
+@* Function declarations and names.
+This file lists all the C code functions used and the names to use
+to bind keys to them. To add functions,	declare it here in both the
+extern function list and the name binding table.
+
+@(efunc.h@>=
 
 /* External function declarations. */
 
