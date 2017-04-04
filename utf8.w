@@ -1,3 +1,4 @@
+\noinx
 @* UTF-8 support.
 @(utf8.h@>=
 #ifndef UTF8_H
