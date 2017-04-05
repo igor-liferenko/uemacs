@@ -1,10 +1,16 @@
-@* @c
-#include "usage.h"
+\noinx
+@* Usage.
+
+@(usage.h@>=
+#ifndef USAGE_H_
+#define USAGE_H_
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+@ @c
+@(usage.h@>
 static void report(const char* prefix, const char *err, va_list params)
 {
 	char msg[4096];
@@ -12,6 +18,9 @@ static void report(const char* prefix, const char *err, va_list params)
 	fprintf(stderr, "%s%s\n", prefix, msg);
 }
 
+@ @(usage.h@>=
+void die(const char* err, ...);
+@ @c
 void die(const char* err, ...)
 {
 	va_list params;
@@ -21,3 +30,6 @@ void die(const char* err, ...)
 	va_end(params);
 	exit(128);
 }
+
+@ @(usage.h@>=
+#endif  /* USAGE_H_ */
