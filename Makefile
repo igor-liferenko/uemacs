@@ -132,7 +132,7 @@ basic.o: basic.c estruct.h efunc.c line.c
 bind.o: bind.c estruct.h edef.h
 buffer.o: buffer.c estruct.h edef.h
 crypt.o: crypt.c estruct.h edef.h
-display.o: display.c estruct.h edef.h utf8.h
+display.o: display.c estruct.h edef.h utf8.h version.c
 eval.o: eval.c estruct.h edef.h
 exec.o: exec.c estruct.h edef.h
 file.o: file.c estruct.h edef.h
