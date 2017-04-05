@@ -1,9 +1,18 @@
-@* @c
+@* Wrapper.
+
+@(wrapper.h@>=
+#ifndef WRAPPER_H_
+#define WRAPPER_H_
+
 #include "usage.h"
 
 #include <stdlib.h>
 
-/* Function copyright: git */
+@ @c @(wrapper.h@>
+
+@ @(wrapper.h@>=
+int xmkstemp(char *template);
+@ @c
 int xmkstemp(char *template)
 {
 	int fd;
@@ -14,6 +23,9 @@ int xmkstemp(char *template)
 	return fd;
 }
 
+@ @(wrapper.h@>=
+void *xmalloc(size_t size);
+@ @c
 void *xmalloc(size_t size)
 {
 	void *ret = malloc(size);
@@ -21,3 +33,6 @@ void *xmalloc(size_t size)
 		die("Out of memory");
 	return ret;
 }
+
+@ @(wrapper.h@>=
+#endif  /* WRAPPER_H_ */
